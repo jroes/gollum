@@ -225,6 +225,26 @@ EOT
     assert_equal expected_table.chomp, page.formatted_data
   end
 
+  test "markdown significant whitespace" do
+    angry_lorem = <<EOS
+Hello people,
+
+Are you aware that ReST is the most broken of the [[Super McLargeHuge Text Markup Languages]]
+and that we probably shouldn't change Gollum to fix the stupid decisions that
+the ReST authors took?
+EOS
+    expected = <<EOS
+<p>Hello people,</p>
+
+<p>Are you aware that ReST is the most broken of the <a class="internal absent" href="/Super-McLargeHuge-Text-Markup-Languages">Super McLargeHuge Text Markup Languages</a>
+and that we probably shouldn't change Gollum to fix the stupid decisions that
+the ReST authors took?</p>
+EOS
+    @wiki.write_page("My Own Angry Lorem Ipsum", :markdown, angry_lorem, commit_details)
+    page = @wiki.page("My Own Angry Lorem Ipsum")
+    assert_equal expected.chomp, page.formatted_data
+  end
+
   #########################################################################
   #
   # Images

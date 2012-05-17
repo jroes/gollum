@@ -99,7 +99,7 @@ module Gollum
     # Returns the newly-fit String.
     def fit_width(id, len)
       if id.length < len
-        id.ljust(len)
+        id.ljust(len, 'X')
       else
         id[0...len]
       end
